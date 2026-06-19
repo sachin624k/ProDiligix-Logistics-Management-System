@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+:root {
+  --pd-primary: #246bed;
+  --pd-secondary: #2d5dd5;
+
+  --pd-gradient: linear-gradient(135deg, #246bed, #2d5dd5);
+
+  --pd-dark: oklch(0.279 0.041 260.031);
+
+  --pd-bg: #f8fafc;
+
+  --pd-white: #ffffff;
+
+  --pd-text: #111827;
+
+  --pd-gray: #64748b;
+}
+
+body {
+  margin: 0;
+
+  font-family: Inter, system-ui, sans-serif;
+
+  background: var(--pd-bg);
+
+  color: var(--pd-text);
+}
