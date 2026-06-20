@@ -229,10 +229,7 @@ export const updateShipmentStatus = async (req, res) => {
   }
 };
 
-// =======================================
 // UPDATE SHIPMENT DETAILS
-// =======================================
-
 export const updateShipment = async (req, res) => {
   try {
     const {
@@ -289,10 +286,7 @@ export const updateShipment = async (req, res) => {
   }
 };
 
-// =======================================
 // DELETE SHIPMENT
-// =======================================
-
 export const deleteShipment = async (req, res) => {
   try {
     // Delete tracking history first

@@ -1,7 +1,5 @@
 import express from "express";
-
 import pool from "../config/db.js";
-
 import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -9,9 +7,7 @@ const router = express.Router();
 // DASHBOARD STATS
 router.get(
   "/",
-
   protect,
-
   authorizeRoles("ADMIN", "MANAGEMENT"),
 
   async (req, res) => {
@@ -85,19 +81,14 @@ router.get(
       res.json({
         cards: {
           customers: customers.rows[0].count,
-
           shipments: shipments.rows[0].count,
-
           transit: transit.rows[0].count,
-
           delivered: delivered.rows[0].count,
-
           revenue: revenue.rows[0].total,
         },
 
         charts: {
           status: status.rows,
-
           mode: mode.rows,
         },
       });

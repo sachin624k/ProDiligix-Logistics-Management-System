@@ -1,33 +1,24 @@
 import express from "express";
-
 import pool from "../config/db.js";
-
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// ===================================
 // GET TRACKING BY SHIPMENT NUMBER
-// ===================================
-
 router.get("/:shipmentId", protect, async (req, res) => {
   try {
-    // 1️⃣ GET SHIPMENT DETAILS
+    // GET SHIPMENT DETAILS
 
     const shipmentResult = await pool.query(
       `
       SELECT
 
         s.*,
-
         c.company_name
 
       FROM shipments s
-
       LEFT JOIN customers c
-
       ON s.customer_id = c.id
-
       WHERE s.shipment_id=$1
       `,
       [req.params.shipmentId],
@@ -39,16 +30,13 @@ router.get("/:shipmentId", protect, async (req, res) => {
       });
     }
 
-    // 2️⃣ GET TRACKING HISTORY
+    // GET TRACKING HISTORY
 
     const trackingResult = await pool.query(
       `
       SELECT *
-
       FROM tracking_history
-
       WHERE shipment_id=$1
-
       ORDER BY updated_at ASC
       `,
       [shipmentResult.rows[0].id],
@@ -56,7 +44,6 @@ router.get("/:shipmentId", protect, async (req, res) => {
 
     res.json({
       shipment: shipmentResult.rows[0],
-
       tracking: trackingResult.rows,
     });
   } catch (error) {
@@ -68,29 +55,22 @@ router.get("/:shipmentId", protect, async (req, res) => {
   }
 });
 
-// ===============================
 // UPDATE SHIPMENT STATUS
-// ===============================
-
 router.post("/:shipmentId", protect, async (req, res) => {
   try {
     const { status, location, remarks } = req.body;
 
     // UPDATE SHIPMENT TABLE
-
     await pool.query(
       `
       UPDATE shipments
-
       SET status=$1
-
       WHERE id=$2
       `,
       [status, req.params.shipmentId],
     );
 
     // INSERT TRACKING HISTORY
-
     const result = await pool.query(
       `
       INSERT INTO tracking_history
@@ -100,9 +80,7 @@ router.post("/:shipmentId", protect, async (req, res) => {
         location,
         remarks
       )
-
       VALUES($1,$2,$3,$4)
-
       RETURNING *
       `,
       [req.params.shipmentId, status, location, remarks],

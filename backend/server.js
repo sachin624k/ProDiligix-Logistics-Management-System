@@ -23,15 +23,10 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
-
 app.use("/api/customers", customerRoutes);
-
 app.use("/api/shipments", shipmentRoutes);
-
 app.use("/api/dashboard", dashboardRoutes);
-
 app.use("/api/reports", reportRoutes);
-
 app.use("/api/tracking", trackingRoutes);
 
 // Database Test

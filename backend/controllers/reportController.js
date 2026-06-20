@@ -2,11 +2,7 @@ import pool from "../config/db.js";
 import ExcelJS from "exceljs";
 import PDFDocument from "pdfkit";
 
-// ===============================
 // GET REPORT DATA
-// DAILY / WEEKLY / MONTHLY
-// ===============================
-
 export const getReportData = async (req, res) => {
   try {
     const { type } = req.query;
@@ -27,42 +23,28 @@ export const getReportData = async (req, res) => {
 
     const report = await pool.query(
       `
-
       SELECT
 
       shipments.shipment_id,
-
       customers.company_name,
-
       shipments.pickup_location,
-
       shipments.delivery_location,
-
       shipments.shipment_mode,
-
       shipments.status,
-
       shipments.shipment_cost,
-
       shipments.created_at
 
-
       FROM shipments
-
 
       JOIN customers
 
       ON shipments.customer_id = customers.id
 
-
       WHERE 1=1
 
       ${condition}
 
-
       ORDER BY shipments.created_at DESC
-
-
       `,
     );
 
@@ -74,42 +56,29 @@ export const getReportData = async (req, res) => {
   }
 };
 
-// ===============================
 // EXPORT EXCEL REPORT
-// ===============================
-
 export const exportExcelReport = async (req, res) => {
   try {
     const data = await pool.query(
       `
-
       SELECT
 
       shipments.shipment_id,
-
       customers.company_name,
-
       shipments.pickup_location,
-
       shipments.delivery_location,
-
       shipments.status,
-
       shipments.shipment_cost
 
-
       FROM shipments
-
 
       JOIN customers
 
       ON shipments.customer_id = customers.id
-
       `,
     );
 
     const workbook = new ExcelJS.Workbook();
-
     const sheet = workbook.addWorksheet("Shipments");
 
     sheet.columns = [
@@ -172,34 +141,24 @@ export const exportExcelReport = async (req, res) => {
   }
 };
 
-// ===============================
 // EXPORT PDF REPORT
-// ===============================
-
 export const exportPDFReport = async (req, res) => {
   try {
     const data = await pool.query(
       `
-
-SELECT
-
-shipments.shipment_id,
-
-customers.company_name,
-
-shipments.status,
-
-shipments.shipment_cost
-
-
-FROM shipments
-
-
-JOIN customers
-
-ON shipments.customer_id = customers.id
-
-`,
+      SELECT
+      
+      shipments.shipment_id,
+      customers.company_name,
+      shipments.status,
+      shipments.shipment_cost
+      
+      FROM shipments
+      
+      JOIN customers
+      
+      ON shipments.customer_id = customers.id
+      `,
     );
 
     const doc = new PDFDocument();
@@ -222,18 +181,12 @@ ON shipments.customer_id = customers.id
     data.rows.forEach((item) => {
       doc.fontSize(12).text(
         `
-
-Shipment ID : ${item.shipment_id}
-
-Customer : ${item.company_name}
-
-Status : ${item.status}
-
-Cost : ₹${item.shipment_cost}
-
----------------------------------
-
-`,
+        Shipment ID : ${item.shipment_id}
+        Customer : ${item.company_name}
+        Status : ${item.status}
+        Cost : ₹${item.shipment_cost}
+        ---------------------------------
+        `,
       );
     });
 
