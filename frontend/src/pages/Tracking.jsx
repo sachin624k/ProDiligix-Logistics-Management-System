@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../api/axios";
 import { useState } from "react";
 
 import {
@@ -29,16 +29,7 @@ const Tracking = () => {
   // TRACK API
   const trackShipment = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      const res = await axios.get(
-        `http://localhost:8000/api/tracking/${shipmentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const res = await api.get(`/tracking/${shipmentId}`);
 
       setData(res.data);
     } catch (error) {
