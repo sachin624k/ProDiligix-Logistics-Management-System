@@ -2,23 +2,67 @@ import pool from "../config/db.js";
 import ExcelJS from "exceljs";
 import PDFDocument from "pdfkit";
 
-// DAILY REPORT
-export const dailyReport = async (req, res) => {
+// ===============================
+// GET REPORT DATA
+// DAILY / WEEKLY / MONTHLY
+// ===============================
+
+export const getReportData = async (req, res) => {
   try {
+    const { type } = req.query;
+
+    let condition = "";
+
+    if (type === "daily") {
+      condition = `AND DATE(shipments.created_at)=CURRENT_DATE`;
+    }
+
+    if (type === "weekly") {
+      condition = `AND shipments.created_at >= NOW() - INTERVAL '7 days'`;
+    }
+
+    if (type === "monthly") {
+      condition = `AND shipments.created_at >= NOW() - INTERVAL '30 days'`;
+    }
+
     const report = await pool.query(
       `
+
       SELECT
-        shipments.*,
-        customers.company_name
+
+      shipments.shipment_id,
+
+      customers.company_name,
+
+      shipments.pickup_location,
+
+      shipments.delivery_location,
+
+      shipments.shipment_mode,
+
+      shipments.status,
+
+      shipments.shipment_cost,
+
+      shipments.created_at
+
 
       FROM shipments
 
+
       JOIN customers
+
       ON shipments.customer_id = customers.id
 
-      WHERE DATE(shipments.created_at) = CURRENT_DATE
+
+      WHERE 1=1
+
+      ${condition}
+
 
       ORDER BY shipments.created_at DESC
+
+
       `,
     );
 
@@ -30,112 +74,79 @@ export const dailyReport = async (req, res) => {
   }
 };
 
-// WEEKLY REPORT
-export const weeklyReport = async (req, res) => {
-  try {
-    const report = await pool.query(
-      `
-      SELECT
-        shipments.*,
-        customers.company_name
-
-      FROM shipments
-
-      JOIN customers
-      ON shipments.customer_id = customers.id
-
-      WHERE shipments.created_at >= NOW() - INTERVAL '7 days'
-
-      ORDER BY shipments.created_at DESC
-      `,
-    );
-
-    res.json(report.rows);
-  } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
-// MONTHLY REPORT
-export const monthlyReport = async (req, res) => {
-  try {
-    const report = await pool.query(
-      `
-      SELECT
-        shipments.*,
-        customers.company_name
-
-      FROM shipments
-
-      JOIN customers
-      ON shipments.customer_id = customers.id
-
-      WHERE shipments.created_at >= NOW() - INTERVAL '30 days'
-
-      ORDER BY shipments.created_at DESC
-      `,
-    );
-
-    res.json(report.rows);
-  } catch (error) {
-    res.status(500).json({
-      error: error.message,
-    });
-  }
-};
-
+// ===============================
 // EXPORT EXCEL REPORT
+// ===============================
 
 export const exportExcelReport = async (req, res) => {
   try {
     const data = await pool.query(
       `
+
       SELECT
+
       shipments.shipment_id,
+
       customers.company_name,
+
       shipments.pickup_location,
+
       shipments.delivery_location,
+
       shipments.status,
-      
+
       shipments.shipment_cost
-      
+
+
       FROM shipments
-      
+
+
       JOIN customers
-      
-      ON shipments.customer_id=customers.id
+
+      ON shipments.customer_id = customers.id
+
       `,
     );
 
     const workbook = new ExcelJS.Workbook();
+
     const sheet = workbook.addWorksheet("Shipments");
 
     sheet.columns = [
       {
         header: "Shipment ID",
         key: "shipment_id",
+        width: 25,
       },
+
       {
         header: "Customer",
         key: "company_name",
+        width: 25,
       },
+
       {
         header: "Pickup",
         key: "pickup_location",
+        width: 25,
       },
+
       {
         header: "Delivery",
         key: "delivery_location",
+        width: 25,
       },
+
       {
         header: "Status",
         key: "status",
+        width: 20,
       },
+
       {
         header: "Cost",
         key: "shipment_cost",
+        width: 15,
       },
     ];
 
@@ -161,23 +172,34 @@ export const exportExcelReport = async (req, res) => {
   }
 };
 
+// ===============================
 // EXPORT PDF REPORT
+// ===============================
+
 export const exportPDFReport = async (req, res) => {
   try {
     const data = await pool.query(
       `
-      SELECT
-      shipments.shipment_id,
-      customers.company_name,
-      shipments.status,
-      shipments.shipment_cost
-      
-      FROM shipments
-      
-      JOIN customers
-      
-      ON shipments.customer_id=customers.id
-      `,
+
+SELECT
+
+shipments.shipment_id,
+
+customers.company_name,
+
+shipments.status,
+
+shipments.shipment_cost
+
+
+FROM shipments
+
+
+JOIN customers
+
+ON shipments.customer_id = customers.id
+
+`,
     );
 
     const doc = new PDFDocument();
@@ -191,19 +213,27 @@ export const exportPDFReport = async (req, res) => {
 
     doc.pipe(res);
 
-    doc.fontSize(20).text("ProDiligix Shipment Report");
+    doc.fontSize(20).text("ProDiligix Shipment Report", {
+      align: "center",
+    });
 
     doc.moveDown();
 
     data.rows.forEach((item) => {
       doc.fontSize(12).text(
         `
-          Shipment: ${item.shipment_id}
-          Customer: ${item.company_name}
-          Status: ${item.status}
-          Cost: ${item.shipment_cost}
-          ----------------------------
-          `,
+
+Shipment ID : ${item.shipment_id}
+
+Customer : ${item.company_name}
+
+Status : ${item.status}
+
+Cost : ₹${item.shipment_cost}
+
+---------------------------------
+
+`,
       );
     });
 

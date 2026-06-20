@@ -228,3 +228,99 @@ export const updateShipmentStatus = async (req, res) => {
     });
   }
 };
+
+// =======================================
+// UPDATE SHIPMENT DETAILS
+// =======================================
+
+export const updateShipment = async (req, res) => {
+  try {
+    const {
+      pickup_location,
+      delivery_location,
+      shipment_mode,
+      weight,
+      carrier_name,
+      expected_delivery_date,
+      shipment_cost,
+      status,
+    } = req.body;
+
+    const updatedShipment = await pool.query(
+      `
+      UPDATE shipments SET
+
+      pickup_location=$1,
+      delivery_location=$2,
+      shipment_mode=$3,
+      weight=$4,
+      carrier_name=$5,
+      expected_delivery_date=$6,
+      shipment_cost=$7,
+      status=$8
+
+      WHERE id=$9
+
+      RETURNING *
+      `,
+      [
+        pickup_location,
+        delivery_location,
+        shipment_mode,
+        weight,
+        carrier_name,
+        expected_delivery_date,
+        shipment_cost,
+        status,
+        req.params.id,
+      ],
+    );
+
+    await createAuditLog(req.user.id, "Updated shipment details", "SHIPMENT");
+
+    res.json({
+      message: "Shipment updated successfully",
+      shipment: updatedShipment.rows[0],
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
+// =======================================
+// DELETE SHIPMENT
+// =======================================
+
+export const deleteShipment = async (req, res) => {
+  try {
+    // Delete tracking history first
+    await pool.query(
+      `
+      DELETE FROM tracking_history
+      WHERE shipment_id=$1
+      `,
+      [req.params.id],
+    );
+
+    // Delete shipment
+    await pool.query(
+      `
+      DELETE FROM shipments
+      WHERE id=$1
+      `,
+      [req.params.id],
+    );
+
+    await createAuditLog(req.user.id, "Deleted shipment", "SHIPMENT");
+
+    res.json({
+      message: "Shipment deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+};

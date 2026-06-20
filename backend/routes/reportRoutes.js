@@ -1,9 +1,7 @@
 import express from "express";
 
 import {
-  dailyReport,
-  weeklyReport,
-  monthlyReport,
+  getReportData,
   exportExcelReport,
   exportPDFReport,
 } from "../controllers/reportController.js";
@@ -12,31 +10,16 @@ import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// DAILY REPORT
-router.get(
-  "/daily",
-  protect,
-  authorizeRoles("ADMIN", "MANAGEMENT"),
-  dailyReport,
-);
+// ===============================
+// GET REPORT DATA
+// ===============================
 
-// WEEKLY REPORT
-router.get(
-  "/weekly",
-  protect,
-  authorizeRoles("ADMIN", "MANAGEMENT"),
-  weeklyReport,
-);
+router.get("/", protect, authorizeRoles("ADMIN", "MANAGEMENT"), getReportData);
 
-// MONTHLY REPORT
-router.get(
-  "/monthly",
-  protect,
-  authorizeRoles("ADMIN", "MANAGEMENT"),
-  monthlyReport,
-);
+// ===============================
+// EXPORT EXCEL
+// ===============================
 
-// EXPORT EXCEL REPORT
 router.get(
   "/export/excel",
   protect,
@@ -44,7 +27,10 @@ router.get(
   exportExcelReport,
 );
 
-// EXPORT PDF REPORT
+// ===============================
+// EXPORT PDF
+// ===============================
+
 router.get(
   "/export/pdf",
   protect,

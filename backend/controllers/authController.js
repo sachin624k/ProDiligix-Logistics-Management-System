@@ -64,18 +64,26 @@ export const loginUser = async (req, res) => {
         id: user.rows[0].id,
         role: user.rows[0].role,
       },
+
       process.env.JWT_SECRET,
+
       {
-        expiresIn: "1d",
+        expiresIn: "7d",
       },
     );
 
     res.json({
       message: "Login successful",
+
       token,
+
       user: {
         id: user.rows[0].id,
+
         name: user.rows[0].name,
+
+        email: user.rows[0].email,
+
         role: user.rows[0].role,
       },
     });
