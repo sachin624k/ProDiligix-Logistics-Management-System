@@ -17,8 +17,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // ================= LOGIN =================
-
+  // LOGIN
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -58,15 +57,15 @@ const Login = () => {
 
       <div
         className="
-        hidden
-        lg:flex
-        w-1/2
-        flex-col
-        justify-center
-        px-20
-        text-white
-        relative
-        overflow-hidden
+          hidden
+          lg:flex
+          w-1/2
+          flex-col
+          justify-center
+          px-20
+          text-white
+          relative
+          overflow-hidden
         "
         style={{
           background: "linear-gradient(135deg,#246BED,#4338CA)",
@@ -75,14 +74,14 @@ const Login = () => {
         <div className="flex items-center gap-5 mb-12">
           <div
             className="
-            bg-white
-            w-24
-            h-24
-            rounded-[28px]
-            flex
-            items-center
-            justify-center
-            shadow-xl
+              bg-white
+              w-24
+              h-24
+              rounded-[28px]
+              flex
+              items-center
+              justify-center
+              shadow-xl
             "
           >
             <img src={logo} className="w-24 scale-125" />
@@ -119,24 +118,16 @@ const Login = () => {
 
       {/* LOGIN CARD */}
 
-      <div
-        className="
-        flex-1
-        flex
-        items-center
-        justify-center
-        px-5
-        "
-      >
+      <div className="flex-1 flex items-center justify-center px-5">
         <div
           className="
-          w-full
-          max-w-md
-          bg-white
-          rounded-[32px]
-          shadow-2xl
-          p-8
-          border
+            w-full
+            max-w-md
+            bg-white
+            rounded-[32px]
+            shadow-2xl
+            p-8
+            border
           "
         >
           <h2 className="text-3xl font-bold">Welcome Back</h2>
@@ -149,28 +140,14 @@ const Login = () => {
             <div>
               <label>Email Address</label>
 
-              <div
-                className="
-                mt-2
-                flex
-                items-center
-                gap-3
-                border
-                rounded-2xl
-                px-4
-                "
-              >
+              <div className="mt-2 flex items-center gap-3 border rounded-2xl px-4">
                 <Mail size={18} />
 
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@prodiligix.com"
-                  className="
-                  flex-1
-                  py-4
-                  outline-none
-                  "
+                  className="flex-1 py-4 outline-none"
                 />
               </div>
             </div>
@@ -180,17 +157,7 @@ const Login = () => {
             <div>
               <label>Password</label>
 
-              <div
-                className="
-                mt-2
-                flex
-                items-center
-                gap-3
-                border
-                rounded-2xl
-                px-4
-                "
-              >
+              <div className="mt-2 flex items-center gap-3 border rounded-2xl px-4">
                 <Lock size={18} />
 
                 <input
@@ -198,11 +165,7 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
-                  className="
-                  flex-1
-                  py-4
-                  outline-none
-                  "
+                  className="flex-1 py-4 outline-none"
                 />
 
                 <button
@@ -217,15 +180,15 @@ const Login = () => {
             <button
               disabled={loading}
               className="
-              w-full
-              bg-[#246BED]
-              text-white
-              rounded-2xl
-              py-4
-              font-semibold
-              flex
-              justify-center
-              gap-2
+                w-full
+                bg-[#246BED]
+                text-white
+                rounded-2xl
+                py-4
+                font-semibold
+                flex
+                justify-center
+                gap-2
               "
             >
               {loading ? (

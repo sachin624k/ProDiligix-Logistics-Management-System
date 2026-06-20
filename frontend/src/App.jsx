@@ -16,8 +16,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   return (
     <BrowserRouter>
-      {/* ================= TOAST MESSAGE ================= */}
-
       <ToastContainer
         position="top-right"
         autoClose={2500}
@@ -30,12 +28,10 @@ function App() {
       />
 
       <Routes>
-        {/* ================= PUBLIC ROUTE ================= */}
-
+        {/* PUBLIC ROUTE */}
         <Route path="/" element={<Login />} />
 
-        {/* ================= PROTECTED ROUTES ================= */}
-
+        {/* PROTECTED ROUTES */}
         <Route
           element={
             <ProtectedRoute>

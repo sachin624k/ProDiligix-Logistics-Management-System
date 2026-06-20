@@ -14,8 +14,7 @@ const Reports = () => {
 
   const [filter, setFilter] = useState("");
 
-  // ================= FETCH =================
-
+  // FETCH
   const fetchReports = async (type = "") => {
     try {
       const res = await api.get(`/reports?type=${type}`);
@@ -30,26 +29,18 @@ const Reports = () => {
     fetchReports();
   }, []);
 
-  // ================= FILTER =================
-
+  // FILTER
   const handleFilter = (type) => {
     setFilter(type);
 
     fetchReports(type);
   };
 
-  // ================= PDF =================
-
+  // PDF
   const exportPDF = () => {
     const doc = new jsPDF();
 
-    doc.text(
-      "ProDiligix Shipment Report",
-
-      14,
-
-      15,
-    );
+    doc.text("ProDiligix Shipment Report", 14, 15);
 
     autoTable(doc, {
       startY: 25,
@@ -58,15 +49,10 @@ const Reports = () => {
 
       body: reports.map((item) => [
         item.shipment_id,
-
         item.company_name,
-
         item.shipment_mode,
-
         item.status,
-
         item.shipment_cost,
-
         new Date(item.created_at).toLocaleDateString(),
       ]),
     });
@@ -74,26 +60,15 @@ const Reports = () => {
     doc.save("shipment-report.pdf");
   };
 
-  // ================= EXCEL =================
-
+  // EXCEL
   const exportExcel = () => {
     const sheet = XLSX.utils.json_to_sheet(reports);
 
     const book = XLSX.utils.book_new();
 
-    XLSX.utils.book_append_sheet(
-      book,
+    XLSX.utils.book_append_sheet(book, sheet, "Reports");
 
-      sheet,
-
-      "Reports",
-    );
-
-    XLSX.writeFile(
-      book,
-
-      "shipment-report.xlsx",
-    );
+    XLSX.writeFile(book, "shipment-report.xlsx");
   };
 
   const statusStyle = (status) => {
@@ -108,145 +83,45 @@ const Reports = () => {
 
   return (
     <div>
-      {/* ================= HEADER ================= */}
-
-      <div
-        className="
-
-flex
-
-justify-between
-
-items-start
-
-gap-5
-
-"
-      >
+      {/* HEADER */}
+      <div className="flex justify-between items-start gap-5">
         <div>
-          <h1
-            className="
+          <h1 className="text-2xl md:text-3xl font-bold">Reports</h1>
 
-text-2xl
-
-md:text-3xl
-
-font-bold
-
-"
-          >
-            Reports
-          </h1>
-
-          <p
-            className="
-
-text-gray-500
-
-text-sm
-
-md:text-base
-
-mt-1
-
-"
-          >
+          <p className="text-gray-500 text-sm md:text-base mt-1">
             Analyze shipment performance
           </p>
         </div>
 
-        <div
-          className="
-
-hidden
-
-sm:flex
-
-items-center
-
-gap-2
-
-bg-white
-
-border
-
-rounded-xl
-
-px-4
-
-py-2
-
-shadow-sm
-
-"
-        >
+        <div className="hidden sm:flex items-center gap-2 bg-white border rounded-xl px-4 py-2 shadow-sm">
           <FileText size={18} className="text-[#246BED]" />
 
           <span className="font-semibold">{reports.length}</span>
         </div>
       </div>
 
-      {/* ================= ACTION CARD ================= */}
-
-      <div
-        className="
-
-mt-6
-
-bg-white
-
-rounded-3xl
-
-border
-
-border-gray-100
-
-shadow-sm
-
-p-4
-
-md:p-5
-
-
-"
-      >
+      {/* ACTION CARD */}
+      <div className="mt-6 bg-white rounded-3xl border border-gray-100 shadow-sm p-4 md:p-5">
         {/* FILTERS */}
-
-        <div
-          className="
-
-grid
-
-grid-cols-3
-
-gap-2
-
-"
-        >
+        <div className="grid grid-cols-3 gap-2">
           {["daily", "weekly", "monthly"].map((item) => (
             <button
               key={item}
               onClick={() => handleFilter(item)}
               className={`
+                py-2.5
+                rounded-xl
+                text-sm
+                capitalize
+                font-medium
+                transition
 
-
-py-2.5
-
-rounded-xl
-
-text-sm
-
-capitalize
-
-font-medium
-
-transition
-
-
-${filter === item ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-500"}
-
-
-`}
+                ${
+                  filter === item
+                    ? "bg-gray-900 text-white"
+                    : "bg-gray-50 text-gray-500"
+                }
+              `}
             >
               <Calendar size={14} className="inline mr-1" />
 
@@ -256,43 +131,20 @@ ${filter === item ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-500"}
         </div>
 
         {/* EXPORT */}
-
-        <div
-          className="
-
-grid
-
-grid-cols-2
-
-gap-3
-
-mt-4
-
-"
-        >
+        <div className="grid grid-cols-2 gap-3 mt-4">
           <button
             onClick={exportPDF}
             className="
-
-border
-
-rounded-xl
-
-py-3
-
-flex
-
-items-center
-
-justify-center
-
-gap-2
-
-font-medium
-
-text-gray-700
-
-"
+              border
+              rounded-xl
+              py-3
+              flex
+              items-center
+              justify-center
+              gap-2
+              font-medium
+              text-gray-700
+            "
           >
             <Download size={17} />
             PDF
@@ -301,26 +153,16 @@ text-gray-700
           <button
             onClick={exportExcel}
             className="
-
-border
-
-rounded-xl
-
-py-3
-
-flex
-
-items-center
-
-justify-center
-
-gap-2
-
-font-medium
-
-text-gray-700
-
-"
+              border
+              rounded-xl
+              py-3
+              flex
+              items-center
+              justify-center
+              gap-2
+              font-medium
+              text-gray-700
+            "
           >
             <Download size={17} />
             Excel
@@ -328,46 +170,11 @@ text-gray-700
         </div>
       </div>
 
-      {/* ================= DESKTOP TABLE ================= */}
-
-      <div
-        className="
-
-hidden
-
-md:block
-
-mt-8
-
-bg-white
-
-rounded-3xl
-
-border
-
-border-gray-100
-
-shadow-sm
-
-p-5
-
-overflow-hidden
-
-"
-      >
+      {/* DESKTOP TABLE */}
+      <div className="hidden md:block mt-8 bg-white rounded-3xl border border-gray-100 shadow-sm p-5 overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr
-              className="
-
-border-b
-
-text-gray-400
-
-text-sm
-
-"
-            >
+            <tr className="border-b text-gray-400 text-sm">
               <th className="text-left py-4">Shipment</th>
 
               <th className="text-left">Customer</th>
@@ -394,18 +201,13 @@ text-sm
                 <td className="text-center">
                   <span
                     className={`
+                      px-4
+                      py-1
+                      rounded-full
+                      text-sm
 
-px-4
-
-py-1
-
-rounded-full
-
-text-sm
-
-${statusStyle(item.status)}
-
-`}
+                      ${statusStyle(item.status)}
+                    `}
                   >
                     {item.status.replaceAll("_", " ")}
                   </span>
@@ -424,49 +226,14 @@ ${statusStyle(item.status)}
         </table>
       </div>
 
-      {/* ================= MOBILE CARDS ================= */}
-
-      <div
-        className="
-
-md:hidden
-
-mt-6
-
-space-y-4
-
-"
-      >
+      {/* MOBILE CARDS */}
+      <div className="md:hidden mt-6 space-y-4">
         {reports.map((item) => (
           <div
             key={item.id}
-            className="
-
-bg-white
-
-rounded-3xl
-
-border
-
-border-gray-100
-
-shadow-sm
-
-p-5
-
-"
+            className="bg-white rounded-3xl border border-gray-100 shadow-sm p-5"
           >
-            <div
-              className="
-
-flex
-
-justify-between
-
-gap-3
-
-"
-            >
+            <div className="flex justify-between gap-3">
               <div>
                 <h3 className="font-bold text-sm">{item.shipment_id}</h3>
 
@@ -475,36 +242,20 @@ gap-3
 
               <span
                 className={`
+                  h-fit
+                  px-3
+                  py-1
+                  rounded-full
+                  text-xs
 
-h-fit
-
-px-3
-
-py-1
-
-rounded-full
-
-text-xs
-
-${statusStyle(item.status)}
-
-`}
+                  ${statusStyle(item.status)}
+                `}
               >
                 {item.status.replaceAll("_", " ")}
               </span>
             </div>
 
-            <div
-              className="
-
-mt-5
-
-space-y-3
-
-text-sm
-
-"
-            >
+            <div className="mt-5 space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-400">Mode</span>
 
@@ -528,22 +279,15 @@ text-sm
       </div>
 
       {/* EMPTY */}
-
       {reports.length === 0 && (
         <div
           className="
-
-py-20
-
-flex
-
-flex-col
-
-items-center
-
-text-gray-400
-
-"
+            py-20
+            flex
+            flex-col
+            items-center
+            text-gray-400
+          "
         >
           <PackageCheck size={55} />
 

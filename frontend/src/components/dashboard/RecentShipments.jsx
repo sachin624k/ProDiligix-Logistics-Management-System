@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-
 import { Package, Building2, IndianRupee } from "lucide-react";
-
 import api from "../../api/axios";
 
 const RecentShipments = () => {
@@ -22,45 +20,17 @@ const RecentShipments = () => {
   }, []);
 
   return (
-    <div
-      className="
-
-bg-white
-
-rounded-[26px]
-
-border
-
-border-gray-100
-
-shadow-sm
-
-p-5
-
-"
-    >
-      <h3
-        className="
-text-xl
-font-bold
-mb-5
-"
-      >
-        Recent Shipments
-      </h3>
+    <div className="bg-white rounded-[26px] border border-gray-100 shadow-sm p-5">
+      <h3 className="text-xl font-bold mb-5">Recent Shipments</h3>
 
       {/* DESKTOP TABLE */}
-
       <div className="hidden md:block">
         <table className="w-full">
           <thead>
             <tr className="text-gray-400 border-b">
               <th className="text-left py-3">Shipment</th>
-
               <th className="text-left">Customer</th>
-
               <th>Status</th>
-
               <th>Amount</th>
             </tr>
           </thead>
@@ -73,15 +43,7 @@ mb-5
                 <td>{item.company_name}</td>
 
                 <td className="text-center">
-                  <span
-                    className="
-bg-gray-100
-rounded-full
-px-3
-py-1
-text-sm
-"
-                  >
+                  <span className="bg-gray-100 rounded-full px-3 py-1 text-sm">
                     {item.status.replaceAll("_", " ")}
                   </span>
                 </td>
@@ -94,50 +56,19 @@ text-sm
       </div>
 
       {/* MOBILE VERSION */}
-
       <div className="md:hidden space-y-4">
         {shipments.map((item) => (
           <div
             key={item.id}
-            className="
-
-border
-
-border-gray-100
-
-rounded-3xl
-
-p-4
-
-shadow-sm
-
-"
+            className="border border-gray-100 rounded-3xl p-4 shadow-sm"
           >
             <div className="flex items-center gap-3">
-              <div
-                className="
-w-11
-h-11
-rounded-2xl
-bg-gray-50
-text-[#246BED]
-flex
-items-center
-justify-center
-"
-              >
+              <div className="w-11 h-11 rounded-2xl bg-gray-50 text-[#246BED] flex items-center justify-center">
                 <Package size={20} />
               </div>
 
               <div className="overflow-hidden">
-                <h4
-                  className="
-font-bold
-truncate
-"
-                >
-                  {item.shipment_id}
-                </h4>
+                <h4 className="font-bold truncate">{item.shipment_id}</h4>
 
                 <p className="text-xs text-gray-400">Shipment ID</p>
               </div>
@@ -156,15 +87,7 @@ truncate
               <div className="flex justify-between">
                 <span className="text-gray-400">Status</span>
 
-                <span
-                  className="
-bg-gray-100
-rounded-full
-px-3
-py-1
-text-xs
-"
-                >
+                <span className="bg-gray-100 rounded-full px-3 py-1 text-xs">
                   {item.status.replaceAll("_", " ")}
                 </span>
               </div>
