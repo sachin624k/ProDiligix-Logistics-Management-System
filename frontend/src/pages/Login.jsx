@@ -51,16 +51,16 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex bg-gray-50 overflow-hidden">
-      {/* LEFT DESKTOP SECTION */}
+      {/* LEFT DESKTOP */}
       <div
         className="
-          hidden lg:flex
+          hidden
+          lg:flex
           w-1/2
           flex-col
           justify-center
           px-20
           text-white
-          relative
         "
         style={{
           background: "linear-gradient(135deg,#246BED,#4338CA)",
@@ -69,10 +69,13 @@ const Login = () => {
         <div className="flex items-center gap-5 mb-12">
           <div
             className="
-              w-24 h-24
+              w-24
+              h-24
               bg-white
               rounded-[28px]
-              flex items-center justify-center
+              flex
+              items-center
+              justify-center
               shadow-xl
             "
           >
@@ -99,7 +102,7 @@ const Login = () => {
             "Real Time Shipment Tracking",
             "Business Analytics Dashboard",
           ].map((item) => (
-            <div key={item} className="flex items-center gap-3">
+            <div key={item} className="flex gap-3 items-center">
               <ShieldCheck />
 
               <span>{item}</span>
@@ -108,7 +111,7 @@ const Login = () => {
         </div>
       </div>
 
-      {/* RIGHT LOGIN SECTION */}
+      {/* RIGHT SIDE */}
       <div
         className="
           flex-1
@@ -116,38 +119,60 @@ const Login = () => {
           items-center
           justify-center
           px-4
-          py-6
+          py-4
+          sm:py-8
           bg-gradient-to-br
           from-white
           to-blue-50
         "
       >
-        <div className="w-full max-w-[380px] mx-auto">
-          {/* MOBILE LOGO */}
-          <div className="lg:hidden text-center mb-6">
+        <div
+          className="
+            w-full
+            max-w-[390px]
+            mx-auto
+          "
+        >
+          {/* MOBILE BRAND */}
+          <div
+            className="
+              lg:hidden
+              text-center
+              mb-5
+            "
+          >
             <div
               className="
                 mx-auto
-                w-20 h-20
+                w-16
+                h-16
                 bg-white
-                rounded-[24px]
+                rounded-2xl
                 flex
                 items-center
                 justify-center
-                shadow-xl
+                shadow-lg
                 mb-3
               "
             >
-              <img src={logo} className="w-20 scale-125" />
+              <img src={logo} className="w-16 scale-125" />
             </div>
 
-            <h1 className="text-3xl font-bold text-gray-900">ProDiligix</h1>
+            <h1
+              className="
+                text-3xl
+                font-bold
+                text-gray-900
+              "
+            >
+              ProDiligix
+            </h1>
 
             <p
               className="
                 text-[#246BED]
-                font-semibold
                 text-sm
+                font-semibold
               "
             >
               Logistics Management System
@@ -158,11 +183,11 @@ const Login = () => {
           <div
             className="
               bg-white
-              rounded-[28px]
-              shadow-xl
+              rounded-[24px]
               border
+              shadow-xl
               px-5
-              py-7
+              py-6
               sm:p-8
             "
           >
@@ -177,12 +202,25 @@ const Login = () => {
               Welcome Back
             </h2>
 
-            <p className="text-gray-500 mt-2 text-sm">
+            <p
+              className="
+                text-gray-500
+                mt-1
+                text-sm
+              "
+            >
               Login to continue your dashboard
             </p>
 
-            <form onSubmit={handleLogin} className="mt-6 space-y-5">
+            <form
+              onSubmit={handleLogin}
+              className="
+                mt-5
+                space-y-4
+              "
+            >
               {/* EMAIL */}
+
               <div>
                 <label className="text-sm">Email Address</label>
 
@@ -193,7 +231,7 @@ const Login = () => {
                     items-center
                     gap-3
                     border
-                    rounded-2xl
+                    rounded-xl
                     px-4
                   "
                 >
@@ -206,7 +244,7 @@ const Login = () => {
                     className="
                       flex-1
                       min-w-0
-                      py-4
+                      py-3
                       outline-none
                       text-sm
                     "
@@ -215,6 +253,7 @@ const Login = () => {
               </div>
 
               {/* PASSWORD */}
+
               <div>
                 <label className="text-sm">Password</label>
 
@@ -225,7 +264,7 @@ const Login = () => {
                     items-center
                     gap-3
                     border
-                    rounded-2xl
+                    rounded-xl
                     px-4
                   "
                 >
@@ -239,7 +278,7 @@ const Login = () => {
                     className="
                       flex-1
                       min-w-0
-                      py-4
+                      py-3
                       outline-none
                       text-sm
                     "
@@ -254,18 +293,19 @@ const Login = () => {
                 </div>
               </div>
 
-              {/* BUTTON */}
+              {/* LOGIN BUTTON */}
+
               <button
                 disabled={loading}
                 className="
                   w-full
+                  py-3.5
+                  rounded-xl
+                  text-white
+                  font-semibold
                   bg-gradient-to-r
                   from-[#246BED]
                   to-[#4338CA]
-                  text-white
-                  rounded-2xl
-                  py-4
-                  font-semibold
                   flex
                   justify-center
                   items-center
@@ -287,7 +327,6 @@ const Login = () => {
                 className="
                   text-center
                   text-xs
-                  sm:text-sm
                   text-gray-500
                 "
               >
