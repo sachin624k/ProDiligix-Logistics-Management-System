@@ -495,6 +495,122 @@ const Shipments = () => {
       </div>
 
       {/* CREATE / EDIT / VIEW MODALS */}
+      {/* CREATE MODAL */}
+
+      {open && (
+        <div
+          className="
+      fixed
+      inset-0
+      bg-black/50
+      flex
+      items-center
+      justify-center
+      z-50
+      p-4
+    "
+        >
+          <div
+            className="
+        bg-white
+        rounded-3xl
+        p-6
+        w-full
+        max-w-xl
+      "
+          >
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="text-xl font-bold">Create Shipment</h2>
+
+              <button onClick={() => setOpen(false)}>
+                <X />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <select
+                value={form.customer_id}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    customer_id: e.target.value,
+                  })
+                }
+                className="border p-3 rounded-xl w-full"
+              >
+                <option value="">Select Customer</option>
+
+                {customers.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.company_name}
+                  </option>
+                ))}
+              </select>
+
+              {[
+                "pickup_location",
+                "delivery_location",
+                "weight",
+                "carrier_name",
+                "expected_delivery_date",
+                "shipment_cost",
+              ].map((field) => (
+                <input
+                  key={field}
+                  type={field === "expected_delivery_date" ? "date" : "text"}
+                  placeholder={field.replaceAll("_", " ")}
+                  value={form[field]}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      [field]: e.target.value,
+                    })
+                  }
+                  className="
+              border
+              p-3
+              rounded-xl
+              w-full
+            "
+                />
+              ))}
+
+              <select
+                value={form.shipment_mode}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    shipment_mode: e.target.value,
+                  })
+                }
+                className="
+            border
+            p-3
+            rounded-xl
+            w-full
+          "
+              >
+                <option>SURFACE</option>
+                <option>AIR</option>
+                <option>SEA</option>
+                <option>RAIL</option>
+              </select>
+
+              <button
+                className="
+            w-full
+            bg-[#246BED]
+            text-white
+            rounded-xl
+            py-3
+          "
+              >
+                Create Shipment
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
